@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="card text-white bg-dark mt-5 mb-5">
+        <div class="card-header "> {{titulo}}</div>
+        <div class="card-body  bg-info">
+            <form class="text-white ">
+                <div class="form-group row ">
+                    <label for="nombre" class="col-form-label col-sm-2"> nombre</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" [(ngModel)]="cliente.nombre" name="nombre">
+                    </div>
+                </div>
+                <div class="form-group row ">
+                    <label for="apellido" class="col-form-label col-sm-2">apellido</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" [(ngModel)]="cliente.apellido" name="apellido">
+                    </div>
+                </div>
+                <div class="form-group row ">
+                    <label for="email" class="col-form-label col-sm-2">email</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" [(ngModel)]="cliente.email" name="email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+                    </div>
+                </div>
+                <div class="form-group">
+                    
+                   <button class="btn btn-dark btn-rounded" (click)="crearCliente()">crear Cliente</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
