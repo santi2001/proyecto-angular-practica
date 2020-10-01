@@ -11,13 +11,14 @@ import Swal from 'sweetalert2';
 export class FormularioAltaClienteComponent implements OnInit {
   titulo = 'formulario Alta';
   cliente: Cliente;
+  errores: string[];
   constructor(private clienteService: ClienteService, private router: Router, private activatedRoute: ActivatedRoute ) {
     this.cliente = new Cliente();
 
   }
 
   ngOnInit(): void {
-    this.modificarCliente();
+    this.cargarCliente();
   }
   public crearCliente(): void{
 
@@ -26,11 +27,14 @@ export class FormularioAltaClienteComponent implements OnInit {
         this.router.navigate(['/clientes']);
 
         Swal.fire('Nuevo Cliente', 'El cliente' + cliente.nombre + ' fue agregado con exito', 'success' );
+        },
+        (err)=> {
+          this.errores = err.error.errors as string[];
         }
     );
 
   }
-  public modificarCliente(): void{
+  public cargarCliente(): void{
 
   this.activatedRoute.params.subscribe(
     params => {
@@ -46,6 +50,22 @@ export class FormularioAltaClienteComponent implements OnInit {
     }
   );
   }
-
-
+  public modificarCliente(): void
+  {
+    this.clienteService.modificarCliente(this.cliente).subscribe(
+      (json) => {
+        this.router.navigate(['/clientes']);
+        Swal.fire('Cliente Actualizado', ' El Cliente' + json.cliente.nombre + 'actualizado con exito!!', 'success');
+      }
+      );
+  }
+  public eliminarCliente(): void
+  {
+    this.clienteService.eliminarCliente(this.cliente).subscribe(
+      (cliente) => {
+        this.router.navigate(['/clientes']);
+        Swal.fire('Cliente Eliminado', ' El Cliente fue eliminado con exito!!');
+      }
+      );
+  }
 }

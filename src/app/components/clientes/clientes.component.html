@@ -15,16 +15,18 @@
                             <th>fecha de Creacion</th>
                             <th>email</th>
                             <th>editar</th>
+                            <th>eliminar</th>
                         </tr>
                     </thead>
                     <tbody>
                             <tr *ngFor="let cliente of clientes">
-                                <td>{{cliente.id}}</td>
-                                <td>{{cliente.nombre}}</td>
-                                <td>{{cliente.apellido}}</td>
-                                <td>{{cliente.createAt}} </td>
+                                <td>{{cliente.id}}  </td>
+                                <td>{{cliente.nombre | uppercase}} </td>
+                                <td>{{cliente.apellido | lowercase}} </td>
+                                <td>{{cliente.createAt | date:"EEEE dd, MMMM yyyy"}} </td>
                                 <td>{{cliente.email}}</td>
-                                <td> <button type="button" name="btneditar"  [routerLink]="['/clientes/form',cliente.id]" class="btn btn-primary">  editar</button> </td>
+                                <td> <button type="button" name="btneditar"  [routerLink]="['/clientes/form',cliente.id]" class="btn btn-warning">editar</button> </td>
+                                <td> <button type="button" name="btneditar" (click)="eliminarCliente(cliente)" class="btn btn-danger">eliminar</button> </td>
                             </tr>
                     </tbody>
                 </table>

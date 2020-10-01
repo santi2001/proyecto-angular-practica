@@ -1,29 +1,65 @@
 <div class="container">
+    <ul class="alert alert-danger" *ngIf="errores?.length>0">
+       <li *ngFor="let err of errores">
+        {{err}}
+       </li> 
+    </ul>
     <div class="card text-white bg-dark mt-5 mb-5">
         <div class="card-header "> {{titulo}}</div>
         <div class="card-body  bg-info">
-            <form class="text-white ">
+            <form class="text-white "#clienteForm ="ngForm">
                 <div class="form-group row ">
                     <label for="nombre" class="col-form-label col-sm-2"> nombre</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" [(ngModel)]="cliente.nombre" name="nombre">
+                        <input type="text" class="form-control" [(ngModel)]="cliente.nombre" name="nombre" required minlength="4" #nombreCliente="ngModel">
+                        <div class="alert alert-danger" *ngIf="nombreCliente.invalid &&(nombreCliente.dirty|| nombreCliente.touched)">
+                            <div  *ngIf="nombreCliente.errors.required">
+                                El Nombre es requerido
+                            </div>
+                            <div  *ngIf="nombreCliente.errors.minlength">
+                                el nombre debe contener al menos 4 caracteres
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group row ">
                     <label for="apellido" class="col-form-label col-sm-2">apellido</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" [(ngModel)]="cliente.apellido" name="apellido">
+                        <input type="text" class="form-control" [(ngModel)]="cliente.apellido" name="apellido" #apellidoCliente="ngModel">
+                        <div class="alert alert-danger" *ngIf="apellidoCliente.invalid &&(apellidoCliente.dirty|| apellidoCliente.touched)">
+                            <div *ngIf="apellidoCliente.errors.required">
+                                El apellido es requerido
+                            </div>
+                            <div class="alert-info" *ngIf="apellidoCliente.errors.minlength">
+                                El apellido debe contener al menos 4 caracteres
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group row ">
                     <label for="email" class="col-form-label col-sm-2">email</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" [(ngModel)]="cliente.email" name="email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+                        <input type="text" class="form-control" [(ngModel)]="cliente.email" name="email" email #emailCliente="ngModel" >
+                        <div class="alert alert-danger" *ngIf="emailCliente.invalid &&(emailCliente.dirty|| emailCliente.touched)">
+                            <div  *ngIf="emailCliente.errors.required">
+                                El apellido es requerido
+                            </div>
+                            
+                            <div class="alert-info" *ngIf="emailCliente.errors.minlength">
+                                El apellido debe contener al menos 4 caracteres
+                            </div>
+                            <div class="alert-danger" *ngIf="emailCliente.errors.email">
+                                El email no tiene un formato valido
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">
-                    
-                   <button class="btn btn-dark btn-rounded" (click)="crearCliente()">crear Cliente</button>
+                    <button class="btn btn-dark btn-rounded" (click)="crearCliente()"
+                        *ngIf="!cliente.id else elseblock" [disabled]="!clienteForm.form.valid">crear Cliente</button>
+                    <ng-template #elseblock>
+                        <button class="btn btn-dark btn-rounded" (click)="modificarCliente()"  [disabled]="!clienteForm.form.valid">actualizar cliente </button>
+                    </ng-template>
                 </div>
             </form>
         </div>
