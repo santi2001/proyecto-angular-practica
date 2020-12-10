@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container ">
     <ul class="alert alert-danger" *ngIf="errores?.length>0">
        <li *ngFor="let err of errores">
         {{err}}
@@ -7,11 +7,11 @@
     <div class="card text-white bg-dark mt-5 mb-5">
         <div class="card-header "> {{titulo}}</div>
         <div class="card-body  bg-info">
-            <form class="text-white "#clienteForm ="ngForm">
+            <form class="text-white "#clienteForm ="ngForm" needs-validation novalidate>
                 <div class="form-group row ">
                     <label for="nombre" class="col-form-label col-sm-2"> nombre</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" [(ngModel)]="cliente.nombre" name="nombre" required minlength="4" #nombreCliente="ngModel">
+                        <input type="text" class="form-control" [(ngModel)]="cliente.nombre" name="nombre" id="nombre" required minlength="4" #nombreCliente="ngModel">
                         <div class="alert alert-danger" *ngIf="nombreCliente.invalid &&(nombreCliente.dirty|| nombreCliente.touched)">
                             <div  *ngIf="nombreCliente.errors.required">
                                 El Nombre es requerido
@@ -19,18 +19,24 @@
                             <div  *ngIf="nombreCliente.errors.minlength">
                                 el nombre debe contener al menos 4 caracteres
                             </div>
+                            <div class="valid-feedback">
+                                Looks good!
+                              </div>
+                              <div class="invalid-feedback">
+                                Please choose a username.
+                              </div>
                         </div>
                     </div>
                 </div>
                 <div class="form-group row ">
                     <label for="apellido" class="col-form-label col-sm-2">apellido</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" [(ngModel)]="cliente.apellido" name="apellido" #apellidoCliente="ngModel">
+                        <input type="text" class="form-control" [(ngModel)]="cliente.apellido" name="apellido" #apellidoCliente="ngModel" required minlength="4">
                         <div class="alert alert-danger" *ngIf="apellidoCliente.invalid &&(apellidoCliente.dirty|| apellidoCliente.touched)">
                             <div *ngIf="apellidoCliente.errors.required">
                                 El apellido es requerido
                             </div>
-                            <div class="alert-info" *ngIf="apellidoCliente.errors.minlength">
+                            <div class="alert-danger" *ngIf="apellidoCliente.errors.minlength">
                                 El apellido debe contener al menos 4 caracteres
                             </div>
                         </div>
@@ -39,14 +45,14 @@
                 <div class="form-group row ">
                     <label for="email" class="col-form-label col-sm-2">email</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" [(ngModel)]="cliente.email" name="email" email #emailCliente="ngModel" >
+                        <input type="text" class="form-control" [(ngModel)]="cliente.email" name="email" email #emailCliente="ngModel" required>
                         <div class="alert alert-danger" *ngIf="emailCliente.invalid &&(emailCliente.dirty|| emailCliente.touched)">
                             <div  *ngIf="emailCliente.errors.required">
-                                El apellido es requerido
+                                El Correo es requerido
                             </div>
                             
                             <div class="alert-info" *ngIf="emailCliente.errors.minlength">
-                                El apellido debe contener al menos 4 caracteres
+                                El Correo debe contener al menos 4 caracteres
                             </div>
                             <div class="alert-danger" *ngIf="emailCliente.errors.email">
                                 El email no tiene un formato valido
@@ -54,13 +60,35 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-group row ">
+                    <label for="fecha" class="col-form-label col-sm-2">fecha</label>
+                    <div class="col-sm-6">
+                        <!-- <input type="date" class="form-control" [(ngModel)]="cliente.createAt" name="fecha" > -->
+                        
+                        <input matInput [matDatepicker]="picker" class="form-control" [(ngModel)]="cliente.createAt" name="fecha" style="display: inline; width: 300px;">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </div>
+                </div>
+                <div class="form-group row ">
+                    <label for="region" class="col-form-label col-sm-2">Region</label>
+                    <div class="col-sm-6">
+                        <!-- <input type="date" class="form-control" [(ngModel)]="cliente.createAt" name="fecha" > -->
+                        
+                        <select [compareWith]="compararRegion" class="form-control" [(ngModel)]="cliente.region" name="region" style=" width: 300px;">
+                            <option  [ngValue]="undefined" >------- seleccione una region</option>
+                            <option *ngFor="let region of regiones" [ngValue]="region" >{{region.nombre}}</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="form-group">
                     <button class="btn btn-dark btn-rounded" (click)="crearCliente()"
                         *ngIf="!cliente.id else elseblock" [disabled]="!clienteForm.form.valid">crear Cliente</button>
                     <ng-template #elseblock>
-                        <button class="btn btn-dark btn-rounded" (click)="modificarCliente()"  [disabled]="!clienteForm.form.valid">actualizar cliente </button>
+                        <button class="btn btn-dark btn-rounded" (click)="modificarCliente()"  [disabled]="!clienteForm.form.valid ">actualizar cliente </button>
                     </ng-template>
                 </div>
+              
             </form>
         </div>
     </div>

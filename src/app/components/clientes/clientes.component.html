@@ -1,38 +1,50 @@
-<div class="container">
-    <div class="card border-info mb-3" >
+<detalle-cliente [cliente]="clienteSeleccionado" *ngIf="clienteSeleccionado"></detalle-cliente>
+<div class="container-fluid">
+    <div class="card border-info mb-3"  >
         <div class="card-header">Clientes</div>
             <div class="card-body text-info">
                 <h5 class="card-title">Lista Clientes</h5>
                 <div class="my-2 text-left" >
-                    <button class="btn btn-rounded btn-primary" type="button" [routerLink]="['/clientes/form']" > crearCliente</button>
+                    <button *ngIf="authService.hasRole('ROLE_ADMIN')" class="btn btn-rounded  fifth " type="button" [routerLink]="['/clientes/form']"  > crearCliente</button>
                 </div>
-                <table class="table table-bordered table-striped" *ngIf="clientes?.length>0">
+                <table class="table table-bordered table-striped table-hover" *ngIf="clientes?.length>0">
                     <thead>
                         <tr>
-                            <th>id</th>
-                            <th>nombre</th>
-                            <th>apellido</th>
-                            <th>fecha de Creacion</th>
-                            <th>email</th>
-                            <th>editar</th>
-                            <th>eliminar</th>
+                           <th *ngIf="authService.hasRole('ROLE_USER')" >  <!-- *ngIf="authService.hasRole('ROLE_USER')"-->#</th> 
+                            <th class="text-center">Foto</th>
+                            <th class="text-center">Nombre</th>
+                            <th class="text-center">apellido</th>
+                            <th class="text-center">Fecha De Creacion</th>
+                            <th class="text-center">Email</th>
+                            
+                            <th *ngIf="authService.hasRole('ROLE_ADMIN')">Editar</th>
+                            <th  *ngIf="authService.hasRole('ROLE_ADMIN')">Eliminar</th>
+                            <th *ngIf="authService.hasRole('ROLE_ADMIN')">crear Factura</th>
                         </tr>
                     </thead>
                     <tbody>
                             <tr *ngFor="let cliente of clientes">
-                                <td>{{cliente.id}}  </td>
+                                <td  *ngIf="authService.hasRole('ROLE_USER')">  <!-- -->{{cliente.id}} </td>
+                                <td> <img (click)="abrirModal(cliente) " src="http://localhost:8080/api/uploads/img/{{cliente.foto}}" *ngIf="cliente?.foto"
+                                    alt="Foto del cliente" class="img-thumbnail rounded" style="width : 64px"> 
+                                    <img (click)="abrirModal(cliente) " src="http://localhost:8080/imagen/nousuario.png" *ngIf="!cliente?.foto"
+                                    alt="Foto del cliente" class="img-thumbnail rounded" style="width : 64px;cursor: pointer;">
+                                </td>
                                 <td>{{cliente.nombre | uppercase}} </td>
                                 <td>{{cliente.apellido | lowercase}} </td>
                                 <td>{{cliente.createAt | date:"EEEE dd, MMMM yyyy"}} </td>
                                 <td>{{cliente.email}}</td>
-                                <td> <button type="button" name="btneditar"  [routerLink]="['/clientes/form',cliente.id]" class="btn btn-warning">editar</button> </td>
-                                <td> <button type="button" name="btneditar" (click)="eliminarCliente(cliente)" class="btn btn-danger">eliminar</button> </td>
+                                <td *ngIf="authService.hasRole('ROLE_ADMIN')"> <button type="button" name="btneditar"  [routerLink]="['/clientes/form',cliente.id]" class="btn btn-warning " ><i class="fas fa-marker"></i> editar</button> </td>
+                                <td *ngIf="authService.hasRole('ROLE_ADMIN')"> <button type="button" name="btneliminar" (click)="eliminarCliente(cliente)" class="btn btn-danger"> <i class="fas fa-trash"></i> eliminar</button> </td>
+                                <td *ngIf="authService.hasRole('ROLE_ADMIN')"> <button type="button" class="btn btn-success btn-sm" [routerLink]="['/facturas/form',cliente.id]"> <i class="fas fa-clipboard"></i> <br> crear Factura</button></td>
                             </tr>
                     </tbody>
                 </table>
+                <paginator-nav *ngIf="paginador" [paginador]="paginador"></paginator-nav>
                 <div *ngIf="clientes?.length==0" class="alert alert-info ">
                     no hay clientes agregados
                 </div>
             </div>
     </div>
+    
 </div>

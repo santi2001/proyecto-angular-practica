@@ -1,6 +1,6 @@
 <div class="container-fluid">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">Navbar</a>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
+        <a class="navbar-brand" href="#"> <img src="../../../assets/descarga.png" width="30px" ></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -8,20 +8,22 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="#">Inicio <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item dropdown">
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a>
-            </div>
+              <a class="nav-link" [routerLink]="['/clientes']"><i class="fas fa-users btna"></i>       Clientes <span class="sr-only">(current)</span></a>
             </li>
           </ul>
+          <ul class="nabar-nav nabar-right mt-2">
+            <li *ngIf="!authService.isAuthenticated()"> <a [routerLink]="['/login']"  class="btn btn-outline-info ">Sign In</a></li>
+            <li *ngIf="authService.isAuthenticated()" class="dropdown">
+              <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{authService.usuario.nombreUsuario}}
+              </a>
+            
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <a class="dropdown-item" (click)="logout()" type="submit"><i class="fas fa-power-off"></i> sign Out</a>
+              </div>
+            </li>
+          </ul>
+        
         </div>
       </nav>
 </div>

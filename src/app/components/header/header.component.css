@@ -1,0 +1,7 @@
+a:hover span {
+    border-bottom-color: white;
+  }
+  
+  a:hover span:after {
+    border-bottom-color: initial ;
+  }
